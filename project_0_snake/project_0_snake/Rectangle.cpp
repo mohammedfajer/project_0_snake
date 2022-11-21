@@ -39,12 +39,19 @@ std::string fragment_shader_source = R"(
 	}
 )";
 
-Rectangle::Rectangle(int x, int y, int width, int height, Color c)
-	: indices{0,1,2,2,1,3}, shader(vertex_shader_source, fragment_shader_source), c(c) {
+Rectangle::Rectangle(int x, int y, int width, int height, Color c, int mode)
+	: shader(vertex_shader_source, fragment_shader_source), c(c), mode(mode) {
 	this->x = x;
 	this->y = y;
-	this->width = width;
+	this->width = width; 
 	this->height = height;
+
+	if (mode == DRAW_MODE_OUTLINE) {
+		indices = { 0,1,3,2 };
+	}
+	else {
+		indices = { 0,2,1, 1,2,3 };
+	}
 
 	set_vertices();
 
@@ -57,7 +64,7 @@ Rectangle::Rectangle(int x, int y, int width, int height, Color c)
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
 	// Position Attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
@@ -72,7 +79,8 @@ Rectangle::Rectangle(int x, int y, int width, int height, Color c)
 	//view = glm::translate(view, glm::vec3(10.0f, 200.0f, 0.0f));
 
 	//projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
-	projection = glm::ortho(0.0f, (float)SCR_WIDTH, 0.0f, (float)SCR_HEIGHT, -1.0f, 1.0f);
+	projection = glm::ortho(0.0f, (float)SCR_WIDTH, (float)SCR_HEIGHT, 0.0f , -1.0f, 1.0f);
+	mode = DRAW_MODE_FILLED;
 }
 
 void Rectangle::set_vertices() {
@@ -127,26 +135,24 @@ void Rectangle::draw() {
 	shader.uploadMatrix4f("uView", view);
 	shader.uploadMatrix4f("uProjection", projection);
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	if (mode == DRAW_MODE_OUTLINE) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_INT, 0);
+	}
+	else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 	glBindVertexArray(0);
 }
 
-void Rectangle::update(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		std::cout << "Move To the Right \n";
-		view = glm::translate(view, glm::vec3(5.0f, 0.0f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		std::cout << "Move To the Left \n";
-		view = glm::translate(view, glm::vec3(-5.0f, 0.0f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		std::cout << "Move Up\n";
-		view = glm::translate(view, glm::vec3(0.0f, 5.0f, 0.0f));
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		std::cout << "Move Down \n";
-		view = glm::translate(view, glm::vec3(0.0f, -5.0f, 0.0f));
-	}
+void Rectangle::setThickness(int thickenss) {
+	glLineWidth(thickenss);
 }
- 
+
+void Rectangle::update(int x, int y) {
+	this->x = x;
+	this->y = y;
+	set_vertices();
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+}

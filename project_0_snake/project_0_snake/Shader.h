@@ -16,6 +16,7 @@ public:
 	Shader(std::string v, std::string f);
 	void use();
 	void uploadMatrix4f(std::string name, glm::mat4 m);
+	void uploadVec3f(std::string name, glm::vec3 v);
 private:
 	void compileShader();
 	void compileProgram();

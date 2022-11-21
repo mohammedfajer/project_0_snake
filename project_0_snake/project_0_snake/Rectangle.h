@@ -5,15 +5,20 @@
 
 #include "Color.h"
 #include "Shader.h"
+#include <vector>
 
-
+#define DRAW_MODE_FILLED  0x12
+#define DRAW_MODE_OUTLINE 0x13
 
 
 class Rectangle {
 public:
-	Rectangle(int x, int y, int width, int height, Color c);
+	Rectangle() = default;
+	Rectangle(int x, int y, int width, int height, Color c, int mode);
 	void draw();
-	void update(GLFWwindow* window);
+	void setThickness(int thickenss);
+	
+	void update(int x, int y);
 private:
 	void set_vertices();
 public:
@@ -24,11 +29,16 @@ private:
 	int width;
 	int height;
 	Color c;
+	int mode;
 private:
 	GLuint VAO, VBO, EBO;
 	
 	float vertices[28];
-	GLuint indices[6];
+	/*GLuint indices[6];*/
+	
+	std::vector<GLuint> indices;
+
+public:
 
 	glm::mat4 model;
 	glm::mat4 view;

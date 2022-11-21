@@ -18,6 +18,10 @@ void Shader::uploadMatrix4f(std::string name, glm::mat4 m) {
 	glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(m));
 }
 
+void Shader::uploadVec3f(std::string name, glm::vec3 v) {
+	glUniform3fv(glGetUniformLocation(shader_program, name.c_str()), 1, glm::value_ptr(v));
+}
+
 void Shader::compileShader() {
 	vertex_shader_ID = glCreateShader(GL_VERTEX_SHADER);
 	const char* c = vertex_shader_source.c_str();

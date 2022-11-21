@@ -1,2 +1,3 @@
-﻿  Rectangle.cpp
+﻿  main.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(84,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   project_0_snake.vcxproj -> C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\project_0_snake.exe
