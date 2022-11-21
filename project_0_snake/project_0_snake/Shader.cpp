@@ -13,6 +13,9 @@ void Shader::use() {
 	}
 	
 }
+void Shader :: unbind() {
+	glUseProgram(0);
+}
 
 void Shader::uploadMatrix4f(std::string name, glm::mat4 m) {
 	glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, glm::value_ptr(m));

@@ -143,7 +143,8 @@ void Rectangle::draw() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-	glBindVertexArray(0);
+	/*glBindVertexArray(0);
+	shader.unbind();*/
 }
 
 void Rectangle::setThickness(int thickenss) {
@@ -154,5 +155,9 @@ void Rectangle::update(int x, int y) {
 	this->x = x;
 	this->y = y;
 	set_vertices();
+	// https://stackoverflow.com/questions/72633347/glbuffersubdata-not-working-doesnt-show-error
+	// WE bind it before so it works
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	
 }

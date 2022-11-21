@@ -1,8 +1,8 @@
 #pragma once
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 672;
+const unsigned int SCR_WIDTH = 900;
+const unsigned int SCR_HEIGHT = 700;
 
-#define GRID_WIDTH 50 // 800/16
-#define GRID_HEIGHT 42 // 672/16
+#define GRID_WIDTH SCR_WIDTH/50 
+#define GRID_HEIGHT SCR_HEIGHT/50 

@@ -1,3 +1,37 @@
-﻿  main.cpp
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(84,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Snake.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(6,115): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(6,106): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(6,97): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(6,85): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(9,15): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(10,16): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  SnakeBody.cpp
+  main.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(92,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(158,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
   project_0_snake.vcxproj -> C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\project_0_snake.exe

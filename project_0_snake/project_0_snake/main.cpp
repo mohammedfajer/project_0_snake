@@ -67,17 +67,25 @@ void isPointInsideAABB(int mouseX, int mouseY, Snake snake) {
 	
 }
 
+
 void snakeEatsApple(Snake* s, Apple* a) {
+	
 	auto sP = s->position;
 	auto aP = a->position;
 	auto xCollision = sP.x + s->width > aP.x && sP.x < aP.x + a->width;
 	auto yCollision = sP.y + s->height > aP.y && sP.y < aP.y + a->height;
 	if (xCollision && yCollision) {
 		a->shouldMove = true;
+		//a->active = false;
 		s->eatApple();
 
 	}
+	
+	
 }
+
+
+
 
 int main() {
 	/* initialize random seed: */
@@ -106,100 +114,81 @@ int main() {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-	/*Rectangle redRect(100, 100, 50, 50, { 1.0f, 0.0f, 0.0f });
-	Rectangle greenRect(300, 300, 100, 100, { 0.0f, 1.0f, 0.0f });*/
 
 
-	Snake s({0, 0}, {50+16, 50+16}, DRAW_MODE_FILLED, { 0,1,0 });
-	//s.body.setThickness(5);
-	 
-	Apple a({ 50+16,50+16 }, { 50+16,50+16 }, DRAW_MODE_OUTLINE);
+
+	Snake s({ 0, 0 }, { 50 , 50  }, DRAW_MODE_FILLED, { 0,1,0 });
+	Apple a ({ 50 ,50  }, { 50 ,50  }, DRAW_MODE_FILLED);
 	
-	//SnakeBody sBody;
-
-	/*
-	Grid grid;
-	grid.setThickness(5);
-
-	grid.draw();
-
-*/
-	
-
-	//Grid grid;
-	//grid.setThickness(5);
 
 	std::vector<Line> horizontalLines;
 	for (int i = 0; i <= GRID_HEIGHT; i++) {
-		auto startPoint = glm::vec2(0.0f, i * (16.0f + 50));
-		auto endPoint = glm::vec2(SCR_WIDTH, i * (16.0f + 50));
+		auto startPoint = glm::vec2(0.0f, i * 50);
+		auto endPoint = glm::vec2(SCR_WIDTH, i * 50);
 		Line l(startPoint, endPoint, { 122 / 255.0f, 129 / 255.0f, 130 / 255.0f });
 		horizontalLines.push_back(l);
 	}
 
 	std::vector<Line> verticalLines;
 	for (int i = 0; i <= GRID_WIDTH; i++) {
-		auto startPoint = glm::vec2(i * (16.0f + 50), 0.0f);
-		auto endPoint = glm::vec2(i * (16.0f + 50), SCR_HEIGHT);
+		auto startPoint = glm::vec2(i * 50, 0.0f);
+		auto endPoint = glm::vec2(i * 50, SCR_HEIGHT);
 		Line l(startPoint, endPoint, { 122 / 255.0f, 129 / 255.0f, 130 / 255.0f });
 		verticalLines.push_back(l);
 	}
 
-	Line line(glm::vec2(100, 100), glm::vec2(400, 400), { 1,1,1 });
-	line.setThickness(2);
+	
+	
+	double currentFrame = glfwGetTime();
+	double lastFrame = currentFrame;
+	double deltaTime;
+	float nextMoveAt = 0;
+
 	while (!glfwWindowShouldClose(window)) {
+	
+		currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		processInput(window);
 		do_joystick();
 		glfwGetCursorPos(window, &xPos, &yPos);
+		
+		if (currentFrame > nextMoveAt) {
+			nextMoveAt = glfwGetTime() + 0.15;
+			snakeEatsApple(&s, &a);
+			
+				
+				
+			
+			
+			s.update(window);
+			a.update(window);
 
-		snakeEatsApple(&s, &a);
+			
+		}
+
 
 		glClearColor(34/255.0f, 32/255.0f, 38/255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-	
 		std::cout << "Apple Count : " << s.eatenApples() << std::endl;
-
-
-		a.update(window);
-		s.update(window);
-
 		a.draw();
+
+		
+
 		s.draw();
 
 
 		for (int i = 0; i < GRID_HEIGHT; i++) {
-			
 			horizontalLines[i].Draw();
 		}
 
 		for (int i = 0; i < GRID_WIDTH; i++) {
-
 			verticalLines[i].Draw();
 		}
 		
-		line.Draw();
-		//std::cout << s.position.x << " " << s.position.y << std::endl;
-
-		//isPointInsideAABB(xPos, yPos, s);
-
 		
-
-
-
-
-		
-		
-		//grid.draw();
-
-		//sBody.update(window, &a);
-		//sBody.draw();
-
-		/*	a.update(window);
-			a.draw();*/
-		
-		/*redRect.draw();
-		greenRect.draw();*/
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

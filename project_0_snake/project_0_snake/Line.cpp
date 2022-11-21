@@ -69,6 +69,7 @@ void Line::Draw()
 	glDrawArrays(GL_LINES, 0, 2);
 	glBindVertexArray(0);
 	glLineWidth(0);
+	shader.unbind();
 }
 
 void Line::setThickness(int thickness)

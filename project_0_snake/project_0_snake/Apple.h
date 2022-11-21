@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Globals.h"
 
 
 class Apple {
@@ -18,9 +19,11 @@ public:
 	int width;
 	int height;
 	Rectangle body;
+	bool active;
 private:
 	glm::vec2 rotation;
 	glm::vec2 scale;
+	glm::vec2 applePositions[GRID_HEIGHT][GRID_WIDTH];
 	
 };
 

@@ -6,10 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-struct ButtonState {
-	int currentState;
-	int previousState;
-};
 
 class Snake {
 public:
@@ -29,9 +25,10 @@ private:
 	glm::vec2 rotation;
 	glm::vec2 scale;
 	int appleAte;
-	
+	int timeToWait;
 	float speed;
 
-	ButtonState buttons[4];
+	bool moveLeft, moveRight, moveUp, moveDown;
+	bool j_moveLeft, j_moveRight, j_moveUp, j_moveDown;
 };
 

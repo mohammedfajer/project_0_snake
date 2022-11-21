@@ -91,6 +91,7 @@ void Grid::draw() {
 	glDrawElements(GL_LINES, lenght, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	shader.unbind();
 }
 
 void Grid::set_vertices(){

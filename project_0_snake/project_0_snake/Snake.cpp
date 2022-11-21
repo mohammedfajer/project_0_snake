@@ -1,7 +1,8 @@
 #include "Snake.h"
 #include <iostream>
 
-
+#include <chrono>
+#include <thread>
 Snake::Snake(glm::vec2 position, glm::vec2 scale, int mode, Color c) : body(position.x, position.y, scale.x, scale.y, c, mode)
 {
 	this->position = position;
@@ -9,78 +10,137 @@ Snake::Snake(glm::vec2 position, glm::vec2 scale, int mode, Color c) : body(posi
 	height = scale.y;
 	appleAte = 0;
 	speed = 0;
+	moveLeft = false;
+	moveRight = false;
+	moveUp = false;
+	moveDown = false;
+	j_moveLeft =  j_moveRight= j_moveUp= j_moveDown = false;
 	
 }
 
 void Snake::update(GLFWwindow* window)
 {
-	buttons[0].currentState = glfwGetKey(window, GLFW_KEY_D);
-	buttons[1].currentState = glfwGetKey(window, GLFW_KEY_A);
-	buttons[2].currentState = glfwGetKey(window, GLFW_KEY_W);
-	buttons[3].currentState = glfwGetKey(window, GLFW_KEY_S);
+	
+	
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		moveRight = true;
+		moveLeft = false;
+		moveUp = false;
+		moveDown = false;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		moveRight = false;
+		moveLeft = true;
+		moveUp = false;
+		moveDown = false;
+	}
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		moveRight = false;
+		moveLeft = false;
+		moveUp = true;
+		moveDown = false;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		moveRight = false;
+		moveLeft = false;
+		moveUp = false;
+		moveDown = true;
+	}
 
-	if (buttons[0].currentState == GLFW_PRESS && buttons[0].previousState == GLFW_RELEASE) {
+	if (moveRight) {
 		std::cout << "Move To the Right \n";
-		body.view = glm::translate(body.view, glm::vec3(speed + width, 0.0f, 0.0f));
-		position.x += speed + width;
-	}
-	else if (buttons[1].currentState == GLFW_PRESS && buttons[1].previousState == GLFW_RELEASE) {
-		std::cout << "Move To the Left \n";
-		body.view = glm::translate(body.view, glm::vec3(-(speed + width), 0.0f, 0.0f));
-		position.x -= (speed+width);
+		
+		body.view = glm::translate(body.view, glm::vec3((int)(speed + width) , 0.0f, 0.0f));
+		position.x += (int)(speed + width);
 
 	}
-	else if (buttons[2].currentState == GLFW_PRESS && buttons[2].previousState == GLFW_RELEASE) {
+	 if (moveLeft) {
+		std::cout << "Move To the Left \n";
+		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+		body.view = glm::translate(body.view, glm::vec3((int) - (speed + width) , 0.0f, 0.0f));
+		position.x -= (int)(speed+width) ;
+
+	}
+	 if (moveUp) {
 		std::cout << "Move Up\n";
-		body.view = glm::translate(body.view, glm::vec3(0.0f, -(speed+height), 0.0f));
-		position.y -= (speed+height);
+		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+		body.view = glm::translate(body.view, glm::vec3(0.0f, (int) - (speed + height), 0.0f));
+		position.y -= (int)(speed+height);
 		
 	}
-	else if (buttons[3].currentState == GLFW_PRESS && buttons[3].previousState == GLFW_RELEASE) {
+	  if (moveDown) {
 		std::cout << "Move Down \n";
-		body.view = glm::translate(body.view, glm::vec3(0.0f, (speed+height), 0.0f));
-		position.y += speed+height;
+		// delay
+		
+		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+
+		body.view = glm::translate(body.view, glm::vec3(0.0f, (int)(speed+height), 0.0f));
+		position.y += (int)(speed+height);
 	
 	}
 	
-	buttons[0].previousState = buttons[0].currentState;
-	buttons[1].previousState = buttons[1].currentState;
-	buttons[2].previousState = buttons[2].currentState;
-	buttons[3].previousState = buttons[3].currentState;
+	  int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	  std::cout << "Joystick/Game pad 1 status: " << present << std::endl;
+	  if (present == 1) {
+		  int axes_count = 0;
+		  const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+		  std::cout << "Number of axes available : " << axes_count << std::endl;
+	  }
+	  GLFWgamepadstate state;
+	  if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state)) {
 
-	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-	std::cout << "Joystick/Game pad 1 status: " << present << std::endl;
-	if (present == 1) {
-		int axes_count = 0;
-		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
-		std::cout << "Number of axes available : " << axes_count << std::endl;
-	}
-	GLFWgamepadstate state;
-	if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state)) {
-		if (state.buttons[GLFW_GAMEPAD_BUTTON_A]) {
-			std::cout << "Move Down \n";
-			body.view = glm::translate(body.view, glm::vec3(0.0f, 5.0f, 0.0f));
-			position.y += 5.0f;
-		}
-		else if (state.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
-			std::cout << "Move Up\n";
-			body.view = glm::translate(body.view, glm::vec3(0.0f, -5.0f, 0.0f));
-			position.y -= 5.0f;
-		}
-		else if (state.buttons[GLFW_GAMEPAD_BUTTON_X]) {
-			std::cout << "Move To the Left \n";
-			body.view = glm::translate(body.view, glm::vec3(-5.0f, 0.0f, 0.0f));
-			position.x -= 5.0f;
-		}
-		else if (state.buttons[GLFW_GAMEPAD_BUTTON_B]) {
-			std::cout << "Move To the Right \n";
-			body.view = glm::translate(body.view, glm::vec3(5.0f, 0.0f, 0.0f));
-			position.x += 5.0f;
-		}
-	}
+		  if (state.buttons[GLFW_GAMEPAD_BUTTON_B]) {
+			  j_moveRight = true;
+			  j_moveLeft = false;
+			  j_moveUp = false;
+			  j_moveDown = false;
+		  }
+		  if (state.buttons[GLFW_GAMEPAD_BUTTON_X]) {
+			  j_moveRight = false;
+			  j_moveLeft = true;
+			  j_moveUp = false;
+			  j_moveDown = false;
+		  }
+		  if (state.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
+			  j_moveRight = false;
+			  j_moveLeft = false;
+			  j_moveUp = true;
+			  j_moveDown = false;
+		  }
+		  if (state.buttons[GLFW_GAMEPAD_BUTTON_A]) {
+			  j_moveRight = false;
+			  j_moveLeft = false;
+			  j_moveUp = false;
+			  j_moveDown = true;
+		  }
+
+
+		  if (j_moveDown) {
+			  std::cout << "Move Down \n";
+			  body.view = glm::translate(body.view, glm::vec3(0.0f, (int)(speed + height), 0.0f));
+			  position.y += (int)(speed + height);
+		  }
+		  if (j_moveUp) {
+			  std::cout << "Move Up\n";
+			  //std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+			  body.view = glm::translate(body.view, glm::vec3(0.0f, (int)-(speed + height), 0.0f));
+			  position.y -= (int)(speed + height);
+		  }
+		  if (j_moveLeft) {
+			  std::cout << "Move To the Left \n";
+			  //std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+			  body.view = glm::translate(body.view, glm::vec3((int)-(speed + width), 0.0f, 0.0f));
+			  position.x -= (int)(speed + width);
+		  }
+		  if (j_moveRight) {
+			  std::cout << "Move To the Right \n";
+
+			  body.view = glm::translate(body.view, glm::vec3((int)(speed + width), 0.0f, 0.0f));
+			  position.x += (int)(speed + width);
+		  }
+	  }
 
 	
-
 }
 
 void Snake::draw()
