@@ -17,17 +17,18 @@ public:
 	Rectangle(int x, int y, int width, int height, Color c, int mode);
 	void draw();
 	void setThickness(int thickenss);
-	
 	void update(int x, int y);
 private:
 	void set_vertices();
 public:
 	Shader shader;
+	int width;
+	int height;
+	glm::vec2 position;
 private:
 	int x;
 	int y;
-	int width;
-	int height;
+	
 	Color c;
 	int mode;
 private:

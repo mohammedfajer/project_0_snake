@@ -10,10 +10,13 @@
 #include "Rectangle.h"
 #include "Snake.h"
 #include "Apple.h"
-#include "SnakeBody.h"
-#include "Grid.h"
+
 #include "Line.h"
 #include <stdlib.h>     /* srand, rand */
+
+
+#include "Node.h"
+#include "DoublyLinkedList.h"
 
 void processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -22,75 +25,13 @@ void processInput(GLFWwindow* window) {
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
-void do_joystick() {
-	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-	std::cout << "Joystick/Game pad 1 status: " << present << std::endl;
-	if (present == 1) {
-		int axes_count = 0;
-		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
-		std::cout << "Number of axes available : " << axes_count << std::endl;
-	}
-	GLFWgamepadstate state;
-	if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state)) {
-		if (state.buttons[GLFW_GAMEPAD_BUTTON_A]) {
-		}
-		if (state.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
-		}
-		if (state.buttons[GLFW_GAMEPAD_BUTTON_X]) {
-		}
-		if (state.buttons[GLFW_GAMEPAD_BUTTON_B]) {
-		}
-	}
-}
-
 
 double xPos, yPos;
-
-static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	
-	glfwGetCursorPos(window, &xPos, &xPos);
-
-	std::cout << "Position: (" << xpos << ":" << ypos << ")";
-
-	
-	//exit(-1);
-}
-
-
-void isPointInsideAABB(int mouseX, int mouseY, Snake snake) {
-	
-	if (mouseX >= snake.position.x && mouseX <= snake.position.x + snake.width && mouseY >= snake.position.y && mouseY <= snake.position.y + snake.height) {
-		std::cout << "Collided \n";
-		exit(-1);
-	}
-	
-}
-
-
-void snakeEatsApple(Snake* s, Apple* a) {
-	
-	auto sP = s->position;
-	auto aP = a->position;
-	auto xCollision = sP.x + s->width > aP.x && sP.x < aP.x + a->width;
-	auto yCollision = sP.y + s->height > aP.y && sP.y < aP.y + a->height;
-	if (xCollision && yCollision) {
-		a->shouldMove = true;
-		//a->active = false;
-		s->eatApple();
-
-	}
-	
-	
-}
-
-
 
 
 int main() {
 	/* initialize random seed: */
 	srand(time(NULL));
-
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -107,20 +48,23 @@ int main() {
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	//glfwSetCursorPosCallback(window, cursor_position_callback); 
-	glfwSetCursorPosCallback(window, cursor_position_callback);
-
+	
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
 
+	// Define Game Objects
 
 
-	Snake s({ 0, 0 }, { 50 , 50  }, DRAW_MODE_FILLED, { 0,1,0 });
-	Apple a ({ 50 ,50  }, { 50 ,50  }, DRAW_MODE_FILLED);
+	// Apple
+	Apple apple ({ 200 , 100  }, { 50 ,50  }, DRAW_MODE_FILLED);
+
+	// Snake
+	Snake theSnake(window, &apple);
 	
-
+	
+	// Setup Grid Lines
 	std::vector<Line> horizontalLines;
 	for (int i = 0; i <= GRID_HEIGHT; i++) {
 		auto startPoint = glm::vec2(0.0f, i * 50);
@@ -137,48 +81,45 @@ int main() {
 		verticalLines.push_back(l);
 	}
 
-	
-	
+	// Setup Time Variables
 	double currentFrame = glfwGetTime();
 	double lastFrame = currentFrame;
 	double deltaTime;
 	float nextMoveAt = 0;
 
 	while (!glfwWindowShouldClose(window)) {
-	
+		
+		// Compute Time
 		currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		// Handle Window Input
 		processInput(window);
-		do_joystick();
+		
+		// Get Mouse Position
 		glfwGetCursorPos(window, &xPos, &yPos);
 		
+
+		// Update Game Objects
+
 		if (currentFrame > nextMoveAt) {
 			nextMoveAt = glfwGetTime() + 0.15;
-			snakeEatsApple(&s, &a);
-			
-				
-				
-			
-			
-			s.update(window);
-			a.update(window);
-
-			
+			apple.update(window);
+			theSnake.update();
 		}
 
+		// Drawing
 
 		glClearColor(34/255.0f, 32/255.0f, 38/255.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		std::cout << "Apple Count : " << s.eatenApples() << std::endl;
-		a.draw();
+		// Draw Game Objects
 
-		
+		apple.draw();
+		theSnake.draw();
 
-		s.draw();
-
+		// Draw Grid Lines
 
 		for (int i = 0; i < GRID_HEIGHT; i++) {
 			horizontalLines[i].Draw();
@@ -188,11 +129,13 @@ int main() {
 			verticalLines[i].Draw();
 		}
 		
-		
+		// Swap Frame buffers
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+
 	glfwTerminate();
 	return 0;
 }

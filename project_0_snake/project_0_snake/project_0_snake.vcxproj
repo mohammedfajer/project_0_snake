@@ -135,24 +135,23 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio\2022\Libraries\glad\src\glad.c" />
     <ClCompile Include="Apple.cpp" />
-    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="SnakeBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Grid.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Snake.h" />
-    <ClInclude Include="SnakeBody.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

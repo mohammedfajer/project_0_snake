@@ -45,6 +45,7 @@ Rectangle::Rectangle(int x, int y, int width, int height, Color c, int mode)
 	this->y = y;
 	this->width = width; 
 	this->height = height;
+	position = glm::vec2(x, y);
 
 	if (mode == DRAW_MODE_OUTLINE) {
 		indices = { 0,1,3,2 };

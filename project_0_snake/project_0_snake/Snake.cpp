@@ -1,151 +1,255 @@
 #include "Snake.h"
 #include <iostream>
+#include "Globals.h"
 
-#include <chrono>
-#include <thread>
-Snake::Snake(glm::vec2 position, glm::vec2 scale, int mode, Color c) : body(position.x, position.y, scale.x, scale.y, c, mode)
+Snake::Snake(GLFWwindow* window, Apple* apple) : window(window), isDead(false) , apple(apple)
 {
-	this->position = position;
-	width = scale.x;
-	height = scale.y;
-	appleAte = 0;
-	speed = 0;
-	moveLeft = false;
-	moveRight = false;
-	moveUp = false;
-	moveDown = false;
-	j_moveLeft =  j_moveRight= j_moveUp= j_moveDown = false;
-	
+	Rectangle snakeHead(50, 50, 50, 50, { 0.1,0.8,0.1 }, DRAW_MODE_FILLED);
+	Rectangle snakeBody(100, 50, 50, 50, { 0, 1, 0 }, DRAW_MODE_FILLED);
+	Rectangle snakeTail(150, 50, 50, 50, { 0, 1, 0 }, DRAW_MODE_FILLED);
+
+	body.addFront(snakeHead);
+	body.addEnd(snakeBody);
+	body.addEnd(snakeTail);
+
+	speed = 50;
+
+	headPosition = glm::vec2(50, 50);
+
+	shouldGrow = false;
 }
 
-void Snake::update(GLFWwindow* window)
-{
-	
-	
+void Snake::inputHandleKeyboard() {
+	snakeDir = (int)SNAKE_DIRECTION::STILL;
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		moveRight = true;
-		moveLeft = false;
-		moveUp = false;
-		moveDown = false;
+
+		joy_moveLeft = joy_moveRight = joy_moveUp = joy_moveDown = false;
+		key_moveRight = true;
+		key_moveLeft = false;
+		key_moveUp = false;
+		key_moveDown = false;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		moveRight = false;
-		moveLeft = true;
-		moveUp = false;
-		moveDown = false;
+		joy_moveLeft = joy_moveRight = joy_moveUp = joy_moveDown = false;
+		key_moveRight = false;
+		key_moveLeft = true;
+		key_moveUp = false;
+		key_moveDown = false;
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		moveRight = false;
-		moveLeft = false;
-		moveUp = true;
-		moveDown = false;
+		joy_moveLeft = joy_moveRight = joy_moveUp = joy_moveDown = false;
+		key_moveRight = false;
+		key_moveLeft = false;
+		key_moveUp = true;
+		key_moveDown = false;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		moveRight = false;
-		moveLeft = false;
-		moveUp = false;
-		moveDown = true;
+		joy_moveLeft = joy_moveRight = joy_moveUp = joy_moveDown = false;
+		key_moveRight = false;
+		key_moveLeft = false;
+		key_moveUp = false;
+		key_moveDown = true;
 	}
-
-	if (moveRight) {
+	if (key_moveRight) {
 		std::cout << "Move To the Right \n";
-		
-		body.view = glm::translate(body.view, glm::vec3((int)(speed + width) , 0.0f, 0.0f));
-		position.x += (int)(speed + width);
-
+		snakeDir = (int)SNAKE_DIRECTION::RIGHT;
 	}
-	 if (moveLeft) {
+	if (key_moveLeft) {
 		std::cout << "Move To the Left \n";
-		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
-		body.view = glm::translate(body.view, glm::vec3((int) - (speed + width) , 0.0f, 0.0f));
-		position.x -= (int)(speed+width) ;
-
+		snakeDir = (int)SNAKE_DIRECTION::LEFT;
 	}
-	 if (moveUp) {
+	if (key_moveUp) {
 		std::cout << "Move Up\n";
-		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
-		body.view = glm::translate(body.view, glm::vec3(0.0f, (int) - (speed + height), 0.0f));
-		position.y -= (int)(speed+height);
-		
+		snakeDir = (int)SNAKE_DIRECTION::UP;	
 	}
-	  if (moveDown) {
+	if (key_moveDown) {
 		std::cout << "Move Down \n";
-		// delay
-		
-		//std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
-
-		body.view = glm::translate(body.view, glm::vec3(0.0f, (int)(speed+height), 0.0f));
-		position.y += (int)(speed+height);
-	
+		snakeDir = (int)SNAKE_DIRECTION::DOWN;
 	}
-	
-	  int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-	  std::cout << "Joystick/Game pad 1 status: " << present << std::endl;
-	  if (present == 1) {
-		  int axes_count = 0;
-		  const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
-		  std::cout << "Number of axes available : " << axes_count << std::endl;
-	  }
-	  GLFWgamepadstate state;
-	  if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state)) {
-
-		  if (state.buttons[GLFW_GAMEPAD_BUTTON_B]) {
-			  j_moveRight = true;
-			  j_moveLeft = false;
-			  j_moveUp = false;
-			  j_moveDown = false;
-		  }
-		  if (state.buttons[GLFW_GAMEPAD_BUTTON_X]) {
-			  j_moveRight = false;
-			  j_moveLeft = true;
-			  j_moveUp = false;
-			  j_moveDown = false;
-		  }
-		  if (state.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
-			  j_moveRight = false;
-			  j_moveLeft = false;
-			  j_moveUp = true;
-			  j_moveDown = false;
-		  }
-		  if (state.buttons[GLFW_GAMEPAD_BUTTON_A]) {
-			  j_moveRight = false;
-			  j_moveLeft = false;
-			  j_moveUp = false;
-			  j_moveDown = true;
-		  }
-
-
-		  if (j_moveDown) {
-			  std::cout << "Move Down \n";
-			  body.view = glm::translate(body.view, glm::vec3(0.0f, (int)(speed + height), 0.0f));
-			  position.y += (int)(speed + height);
-		  }
-		  if (j_moveUp) {
-			  std::cout << "Move Up\n";
-			  //std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
-			  body.view = glm::translate(body.view, glm::vec3(0.0f, (int)-(speed + height), 0.0f));
-			  position.y -= (int)(speed + height);
-		  }
-		  if (j_moveLeft) {
-			  std::cout << "Move To the Left \n";
-			  //std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
-			  body.view = glm::translate(body.view, glm::vec3((int)-(speed + width), 0.0f, 0.0f));
-			  position.x -= (int)(speed + width);
-		  }
-		  if (j_moveRight) {
-			  std::cout << "Move To the Right \n";
-
-			  body.view = glm::translate(body.view, glm::vec3((int)(speed + width), 0.0f, 0.0f));
-			  position.x += (int)(speed + width);
-		  }
-	  }
-
-	
 }
 
-void Snake::draw()
+void Snake::inputHandleJoystick() {
+	snakeDir = (int)SNAKE_DIRECTION::STILL;
+	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	if (present == 1) {
+		int axes_count = 0;
+		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+	}
+	GLFWgamepadstate state;
+	if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state)) {
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_B]) {
+			key_moveLeft = key_moveRight = key_moveUp = key_moveDown = false;
+			joy_moveRight = true;
+			joy_moveLeft = false;
+			joy_moveUp = false;
+			joy_moveDown = false;
+		}
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_X]) {
+			key_moveLeft = key_moveRight = key_moveUp = key_moveDown = false;
+			joy_moveRight = false;
+			joy_moveLeft = true;
+			joy_moveUp = false;
+			joy_moveDown = false;
+		}
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_Y]) {
+			key_moveLeft = key_moveRight = key_moveUp = key_moveDown = false;
+			joy_moveRight = false;
+			joy_moveLeft = false;
+			joy_moveUp = true;
+			joy_moveDown = false;
+		}
+		if (state.buttons[GLFW_GAMEPAD_BUTTON_A]) {
+			key_moveLeft = key_moveRight = key_moveUp = key_moveDown = false;
+			joy_moveRight = false;
+			joy_moveLeft = false;
+			joy_moveUp = false;
+			joy_moveDown = true;
+		}
+		if (joy_moveDown) {
+			std::cout << "Move Down \n";
+			snakeDir = (int)SNAKE_DIRECTION::DOWN;
+		}
+		if (joy_moveUp) {
+			std::cout << "Move Up\n";
+			snakeDir = (int)SNAKE_DIRECTION::UP;
+		}
+		if (joy_moveLeft) {
+			std::cout << "Move To the Left \n";
+			snakeDir = (int)SNAKE_DIRECTION::LEFT;
+		}
+		if (joy_moveRight) {
+			std::cout << "Move To the Right \n";
+			snakeDir = (int)SNAKE_DIRECTION::RIGHT;
+		}
+	}
+}
+
+void Snake::checkCollisionWithWalls(){
+	// if head hits wall
+	// if body hits wall
+}
+
+void Snake::checkCollisionWithApple(){
+
+	auto head = body.head;
+
+	auto applePosition = apple->position;
+
+	auto xCollision = head->data.position.x + head->data.width > applePosition.x && head->data.position.x < applePosition.x + apple->width;
+	auto yCollision = head->data.position.y + head->data.height > applePosition.y && head->data.position.y < applePosition.y + apple->height;
+
+	if (xCollision && yCollision) {
+		apple->shouldMove = true;
+		eatenAppleCount++;
+
+		// 
+		shouldGrow = true;
+	}
+	else {
+		shouldGrow = false;
+	}
+
+}
+
+void Snake::checkCollisionWithBody(){
+	// if head or body hit head or body
+}
+
+void Snake::update() {
+	if (!isDead) {
+		// Handle Input
+		inputHandleKeyboard();
+		inputHandleJoystick();
+
+		// Snake Movement
+	
+		move();
+		
+		// Handle Collision
+		checkCollisionWithWalls();
+		checkCollisionWithBody();
+		checkCollisionWithApple();
+
+		// Snake Grow 
+		grow();
+
+	}
+}
+
+void Snake::draw() {
+	if (!isDead) {
+		auto current = body.head;
+		while (current != nullptr) {
+			current->data.draw();
+			current = current->next;
+		}
+	}
+}
+
+void Snake::move() {
+
+	// Every block takes in the position of its previous block
+	if (key_moveRight || joy_moveRight) {
+		moveBody();
+		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(speed, 0.0f, 0.0f));
+		body.head->data.position.x += speed;
+		//headPosition.x += speed;
+	}
+	if (key_moveLeft || joy_moveLeft) {
+		moveBody();
+		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(-speed, 0.0f, 0.0f));
+		body.head->data.position.x -= speed;
+		//headPosition.x -= speed;
+	}
+	if (key_moveUp || joy_moveUp) {
+		moveBody();
+		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(0.0f, -speed, 0.0f));
+		body.head->data.position.y -= speed;
+		//headPosition.y -= speed;
+	}
+	if (key_moveDown || joy_moveDown) {
+		moveBody();
+		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(0.0f, speed, 0.0f));
+		body.head->data.position.y += speed;
+		//headPosition.y += speed;
+	}
+}
+
+void Snake::moveBody()
 {
-	body.draw();
 	
+
+	auto current = body.tail;
+	while (current != body.head) {
+
+		
+
+		//current->data.view = glm::translate(current->prev->data.view, glm::vec3(current->data.position.x, current->data.position.y, 0.0f));
+
+		auto prevPos = current->prev->data.position;
+		current->data.position = prevPos;
+		current->data.update(prevPos.x, prevPos.y);
+		//headPosition += current->data.position;
+
+
+		current = current->prev;
+	}
+	//auto prevPos = body.head->data.position;
+	//current->data.position = prevPos;
+	//current->data.update(prevPos.x, prevPos.y);
+
 }
 
+void Snake::grow() {
+	if (shouldGrow) {
+		std::cout << "Growing ....\n";
+		std::cout << "Apples Eaten So Far := " << eatenAppleCount << std::endl;
+		std::cout << "Snake Direction := " << snakeDir << std::endl;
+
+
+		Rectangle bodyPart(body.tail->data.position.x, body.tail->data.position.y, 50, 50, { 0,1,0 }, DRAW_MODE_FILLED);
+		body.addEnd(bodyPart);
+
+		shouldGrow = false;
+	}
+}

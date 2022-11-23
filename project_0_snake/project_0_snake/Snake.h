@@ -6,29 +6,48 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
+#include "DoublyLinkedList.h"
+#include "Rectangle.h"
+#include "Apple.h"
 
-class Snake {
+class Snake
+{
 public:
-	Snake(glm::vec2 position, glm::vec2 scale, int mode, Color c);
-	void update(GLFWwindow* window);
+	Snake() = default;
+	Snake(GLFWwindow* window, Apple *apple);
+public:
+	void inputHandleKeyboard();
+	void inputHandleJoystick();
+public:
+	void checkCollisionWithWalls();
+	void checkCollisionWithApple();
+	void checkCollisionWithBody();
+public:
+	void update();
 	void draw();
-	void eatApple() { appleAte++;  }
-	int eatenApples() { return appleAte; }
-	
-public:
-	glm::vec2 position;
-	int width;
-	int height;
-	Rectangle body;
 private:
+	void move();
+	void moveBody();
+	void grow();
+public:
+	int snakeDir;
+	int speed;
+private:
+	DoublyLinkedList<Rectangle> body;
+	unsigned int eatenAppleCount;
+	bool isDead;
+	bool key_moveRight;
+	bool key_moveLeft;
+	bool key_moveUp;
+	bool key_moveDown;
+	bool joy_moveRight;
+	bool joy_moveLeft;
+	bool joy_moveUp;
+	bool joy_moveDown;
+	GLFWwindow* window;
+	Apple* apple;
+	glm::vec2 headPosition;
+	bool shouldGrow;
+	
 
-	glm::vec2 rotation;
-	glm::vec2 scale;
-	int appleAte;
-	int timeToWait;
-	float speed;
-
-	bool moveLeft, moveRight, moveUp, moveDown;
-	bool j_moveLeft, j_moveRight, j_moveUp, j_moveDown;
 };
-
