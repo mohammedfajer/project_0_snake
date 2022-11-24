@@ -10,7 +10,7 @@
 #include "Rectangle.h"
 #include "Snake.h"
 #include "Apple.h"
-#include "Sprite.h"
+
 
 #include "Line.h"
 #include <stdlib.h>     /* srand, rand */
@@ -39,7 +39,7 @@ int main() {
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Snake", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -62,8 +62,7 @@ int main() {
 	// Snake
 	Snake theSnake(window, &apple);
 
-	// Apple Sprite
-	Sprite appleImg({ 200.0f, 200.0f }, "./snake_graphics/Graphics/apple.png");
+
 	
 	
 	// Setup Grid Lines
@@ -123,7 +122,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Draw Game Objects
-		appleImg.draw();
+		
 		apple.draw();
 		theSnake.draw();
 
