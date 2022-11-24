@@ -1,7 +1,76 @@
-﻿  Line.cpp
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Line.cpp(62,14): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+﻿  Apple.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(13,45): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(13,36): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(13,27): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(13,15): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(16,15): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(17,16): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(22,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(23,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(54,34): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Apple.cpp(54,22): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
   main.cpp
 C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(33,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\main.cpp(108,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Rectangle.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Rectangle.cpp(159,14): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  Snake.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(8,71): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(238,42): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(238,31): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(255,74): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(255,46): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
   Generating Code...
+glad.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'glad.obj' or at 'C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\vc143.pdb'; linking object as if no debug info
+DoublyLinkedList.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'DoublyLinkedList.obj' or at 'C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\vc143.pdb'; linking object as if no debug info
+Shader.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Shader.obj' or at 'C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\vc143.pdb'; linking object as if no debug info
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   project_0_snake.vcxproj -> C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\x64\Debug\project_0_snake.exe
