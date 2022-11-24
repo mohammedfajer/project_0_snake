@@ -50,6 +50,6 @@ void Apple::moveToNewPosition(){
 	int xId = rand() % GRID_WIDTH - 1;
 	int yId = rand() % GRID_HEIGHT - 1;
 	auto pos = applePositions[yId][xId];
-	position = glm::vec2(pos.x, pos.y );
+	position = glm::vec2(pos.x, pos.y);
 	body.update(position.x, position.y);
 }

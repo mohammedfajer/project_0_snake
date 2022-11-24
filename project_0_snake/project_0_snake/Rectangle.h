@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "stb_image.h"
 
 #include "Color.h"
 #include "Shader.h"
@@ -18,6 +19,7 @@ public:
 	void draw();
 	void setThickness(int thickenss);
 	void update(int x, int y);
+	
 private:
 	void set_vertices();
 public:

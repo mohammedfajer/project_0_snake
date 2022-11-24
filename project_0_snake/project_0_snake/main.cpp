@@ -10,11 +10,10 @@
 #include "Rectangle.h"
 #include "Snake.h"
 #include "Apple.h"
+#include "Sprite.h"
 
 #include "Line.h"
 #include <stdlib.h>     /* srand, rand */
-
-
 #include "Node.h"
 #include "DoublyLinkedList.h"
 
@@ -62,6 +61,9 @@ int main() {
 
 	// Snake
 	Snake theSnake(window, &apple);
+
+	// Apple Sprite
+	Sprite appleImg({ 200.0f, 200.0f }, "./snake_graphics/Graphics/apple.png");
 	
 	
 	// Setup Grid Lines
@@ -111,11 +113,17 @@ int main() {
 
 		// Drawing
 
-		glClearColor(34/255.0f, 32/255.0f, 38/255.0f, 1.0f);
+		double  timeValue = glfwGetTime();
+		float greenValue = static_cast<float>(sin(timeValue) / 5.0 + 0.8);
+		float redValue = static_cast<float>(cos(timeValue) / 5.0 + 0.8);
+		float blueValue = static_cast<float>(tan(timeValue) / 5.0 + 0.8);
+
+		//glClearColor(34/255.0f, 32/255.0f, 38/255.0f, 1.0f);
+		glClearColor(redValue, greenValue, blueValue, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Draw Game Objects
-
+		appleImg.draw();
 		apple.draw();
 		theSnake.draw();
 

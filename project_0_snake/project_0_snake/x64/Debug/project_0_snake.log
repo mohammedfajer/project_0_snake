@@ -1,21 +1,10 @@
-﻿  Snake.cpp
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(7,71): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(234,42): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+﻿  Sprite.cpp
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Sprite.cpp(49,8): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(234,31): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(253,74): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Snake.cpp(253,46): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+C:\Users\moham\OneDrive\Desktop\game_programming\project_0_snake\project_0_snake\project_0_snake\Sprite.cpp(50,8): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float

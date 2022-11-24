@@ -47,6 +47,7 @@ Rectangle::Rectangle(int x, int y, int width, int height, Color c, int mode)
 	this->height = height;
 	position = glm::vec2(x, y);
 
+
 	if (mode == DRAW_MODE_OUTLINE) {
 		indices = { 0,1,3,2 };
 	}
@@ -130,12 +131,15 @@ void Rectangle::set_vertices() {
 	vertices[27] = c.a;
 }
 
+
 void Rectangle::draw() {
 	shader.use();
 	shader.uploadMatrix4f("uModel", model);
 	shader.uploadMatrix4f("uView", view);
 	shader.uploadMatrix4f("uProjection", projection);
 	glBindVertexArray(VAO);
+
+	
 	if (mode == DRAW_MODE_OUTLINE) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_INT, 0);
@@ -144,6 +148,9 @@ void Rectangle::draw() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
+	
+
+	
 	/*glBindVertexArray(0);
 	shader.unbind();*/
 }
@@ -162,3 +169,4 @@ void Rectangle::update(int x, int y) {
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 	
 }
+

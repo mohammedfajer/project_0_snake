@@ -141,6 +141,7 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -152,6 +153,11 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="snake_graphics\Graphics\apple.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

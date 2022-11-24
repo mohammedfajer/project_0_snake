@@ -64,7 +64,12 @@ void Line::Draw()
 	shader.uploadMatrix4f("uModel", model);
 	shader.uploadMatrix4f("uView", view);
 	shader.uploadMatrix4f("uProjection", projection);
-	shader.uploadVec3f("uColor", glm::vec3(lineColor.r, lineColor.g, lineColor.b));
+
+	double  timeValue = glfwGetTime();
+	float greenValue = static_cast<float>(sin(timeValue) / 2.0 + 0.5);
+	float redValue = static_cast<float>(cos(timeValue) / 1.0 + 0.2);
+	float blueValue = static_cast<float>(tan(timeValue) / 0.5 + 0.1);
+	shader.uploadVec3f("uColor", glm::vec3(redValue, greenValue, 0.1f));
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_LINES, 0, 2);
 	glBindVertexArray(0);

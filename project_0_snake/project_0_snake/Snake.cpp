@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Globals.h"
 
+
 Snake::Snake(GLFWwindow* window, Apple* apple) : window(window), isDead(false) , apple(apple)
 {
 	Rectangle snakeHead(50, 50, 50, 50, { 0.1,0.8,0.1 }, DRAW_MODE_FILLED);
@@ -13,9 +14,6 @@ Snake::Snake(GLFWwindow* window, Apple* apple) : window(window), isDead(false) ,
 	body.addEnd(snakeTail);
 
 	speed = 50;
-
-	headPosition = glm::vec2(50, 50);
-
 	shouldGrow = false;
 }
 
@@ -127,6 +125,21 @@ void Snake::inputHandleJoystick() {
 void Snake::checkCollisionWithWalls(){
 	// if head hits wall
 	// if body hits wall
+
+	auto snakeHeadPos = body.head->data.position;
+
+	if (snakeHeadPos.x + body.head->data.width > SCR_WIDTH || snakeHeadPos.x < 0) {
+
+		std::cout << "Collision with wall ! \n";
+		isDead = true;
+	}
+
+	if (snakeHeadPos.y + body.head->data.height > SCR_HEIGHT || snakeHeadPos.y < 0) {
+
+		std::cout << "Collision with wall ! \n";
+		isDead = true;
+	}
+
 }
 
 void Snake::checkCollisionWithApple(){
@@ -162,7 +175,6 @@ void Snake::update() {
 		inputHandleJoystick();
 
 		// Snake Movement
-	
 		move();
 		
 		// Handle Collision
@@ -193,36 +205,31 @@ void Snake::move() {
 		moveBody();
 		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(speed, 0.0f, 0.0f));
 		body.head->data.position.x += speed;
-		//headPosition.x += speed;
+		
 	}
 	if (key_moveLeft || joy_moveLeft) {
 		moveBody();
 		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(-speed, 0.0f, 0.0f));
 		body.head->data.position.x -= speed;
-		//headPosition.x -= speed;
+		
 	}
 	if (key_moveUp || joy_moveUp) {
 		moveBody();
 		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(0.0f, -speed, 0.0f));
 		body.head->data.position.y -= speed;
-		//headPosition.y -= speed;
+		
 	}
 	if (key_moveDown || joy_moveDown) {
 		moveBody();
 		body.head->data.view = glm::translate(body.head->data.view, glm::vec3(0.0f, speed, 0.0f));
 		body.head->data.position.y += speed;
-		//headPosition.y += speed;
+		
 	}
 }
 
-void Snake::moveBody()
-{
-	
-
+void Snake::moveBody() {
 	auto current = body.tail;
 	while (current != body.head) {
-
-		
 
 		//current->data.view = glm::translate(current->prev->data.view, glm::vec3(current->data.position.x, current->data.position.y, 0.0f));
 
@@ -245,11 +252,8 @@ void Snake::grow() {
 		std::cout << "Growing ....\n";
 		std::cout << "Apples Eaten So Far := " << eatenAppleCount << std::endl;
 		std::cout << "Snake Direction := " << snakeDir << std::endl;
-
-
 		Rectangle bodyPart(body.tail->data.position.x, body.tail->data.position.y, 50, 50, { 0,1,0 }, DRAW_MODE_FILLED);
 		body.addEnd(bodyPart);
-
 		shouldGrow = false;
 	}
 }
